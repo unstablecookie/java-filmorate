@@ -22,7 +22,7 @@ import ru.yandex.practicum.filmorate.errors.InvalidUserDataException;
 public class UserController {
     private Map<Long, User> mapOfUsers = new HashMap<>();
     private Long id = 0L;
-    
+
     @GetMapping("/users")
     public List<User> getUsers() {
         log.info("get all users");
@@ -60,7 +60,7 @@ public class UserController {
             throw new InvalidUserDataException("wrong or empty email field");
         }
     }
-    
+
     public void userLoginValidation(String login) throws InvalidUserDataException {
         if ((login == null) || login.equals("") || (login.split(" ").length > 1)) {
             log.debug("login == null : " + (login == null));
@@ -69,7 +69,7 @@ public class UserController {
             throw new InvalidUserDataException("wrong user login");
         }
     }
-    
+
     public void userBirthdayValidation(LocalDate date) throws InvalidUserDataException {
         if (date.isAfter(LocalDate.now())) {
             throw new InvalidUserDataException("wrong birthday date");
