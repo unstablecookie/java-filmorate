@@ -18,17 +18,13 @@ import ru.yandex.practicum.filmorate.errors.*;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.UserController;
 
-
-
 @SpringBootTest
 class FilmorateApplicationTests {
-
 	static final LocalDate INITIAL_DATE = LocalDate.of(1895, 12, 28);
 	@Autowired
 	private Validator validator;
 	@Autowired
 	private UserController userController;
-	
 	@Autowired
 	private FilmController filmController;
 	
@@ -103,6 +99,7 @@ class FilmorateApplicationTests {
 		//then
 		assertThrows(UserAlreadyExistException.class, ()-> {userController.addUser(secondUser);});
 	}
+	
 	@Test
 	void userAdded_success_withMalformedId() throws UserAlreadyExistException {
 		Long id = -999l;
@@ -123,6 +120,7 @@ class FilmorateApplicationTests {
 		//then
 		assertEquals(1l,firstUser.getId());
 	}
+	
 	@Test
 	void userAdded_failure_withEmptyEmail() throws UserAlreadyExistException {
 		Long id = 1l;
@@ -141,7 +139,7 @@ class FilmorateApplicationTests {
 		//then
 		assertFalse(violations.isEmpty());
 	}
-
+	
 	@Test
 	void userAdded_failure_withNullEmail() throws UserAlreadyExistException {
 		Long id = 1l;
@@ -160,7 +158,7 @@ class FilmorateApplicationTests {
 		//then
 		assertFalse(violations.isEmpty());
 	}
-
+	
 	@Test
 	void userAdded_failure_withEmptyLogin() throws UserAlreadyExistException {
 		Long id = 1l;
@@ -179,7 +177,7 @@ class FilmorateApplicationTests {
 		//then
 		assertFalse(violations.isEmpty());
 	}
-
+	
 	@Test
 	void userAdded_failure_withNullLogin() throws UserAlreadyExistException {
 		Long id = 1l;
