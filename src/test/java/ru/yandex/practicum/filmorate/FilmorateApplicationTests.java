@@ -27,7 +27,7 @@ class FilmorateApplicationTests {
 	private UserController userController;
 	@Autowired
 	private FilmController filmController;
-	
+
 	@BeforeEach
 	void reinitializeControllers() {
 		userController = new UserController();
@@ -35,7 +35,7 @@ class FilmorateApplicationTests {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
-	
+
 	@Test
 	void userContextLoads_success() {
 		assertNotNull(userController);
@@ -45,7 +45,7 @@ class FilmorateApplicationTests {
 	void filmContextLoads_success() {
 		assertNotNull(filmController);
 	}
-	
+
 	@Test
 	void userAdded_success() throws UserAlreadyExistException {
 		//given
@@ -71,7 +71,7 @@ class FilmorateApplicationTests {
 		assertEquals(name,firstUser.getName());
 		assertEquals(date,firstUser.getBirthday());
 	}
-	
+
 	@Test
 	void userAdded_failure_userAlreadyExistException() throws UserAlreadyExistException {
 		Long id = 1l;
@@ -99,7 +99,7 @@ class FilmorateApplicationTests {
 		//then
 		assertThrows(UserAlreadyExistException.class, ()-> {userController.addUser(secondUser);});
 	}
-	
+
 	@Test
 	void userAdded_success_withMalformedId() throws UserAlreadyExistException {
 		Long id = -999l;
@@ -120,7 +120,7 @@ class FilmorateApplicationTests {
 		//then
 		assertEquals(1l,firstUser.getId());
 	}
-	
+
 	@Test
 	void userAdded_failure_withEmptyEmail() throws UserAlreadyExistException {
 		Long id = 1l;
@@ -139,7 +139,7 @@ class FilmorateApplicationTests {
 		//then
 		assertFalse(violations.isEmpty());
 	}
-	
+
 	@Test
 	void userAdded_failure_withNullEmail() throws UserAlreadyExistException {
 		Long id = 1l;
@@ -158,7 +158,7 @@ class FilmorateApplicationTests {
 		//then
 		assertFalse(violations.isEmpty());
 	}
-	
+
 	@Test
 	void userAdded_failure_withEmptyLogin() throws UserAlreadyExistException {
 		Long id = 1l;
@@ -177,7 +177,7 @@ class FilmorateApplicationTests {
 		//then
 		assertFalse(violations.isEmpty());
 	}
-	
+
 	@Test
 	void userAdded_failure_withNullLogin() throws UserAlreadyExistException {
 		Long id = 1l;

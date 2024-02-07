@@ -23,13 +23,12 @@ public class Film {
     LocalDate releaseDate;
     @DurationUnit(ChronoUnit.MINUTES)
     Duration duration;
-    
+
     public void setDuration(long minutes) {
-        
         duration = Duration.ofMinutes(minutes);
     }
+
     public long getDuration() {
-        
         return duration.toMinutes();
     }
 }
