@@ -49,7 +49,7 @@ class FilmorateApplicationTests {
 	@Test
 	void userAdded_success() throws UserAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = "userLogin";
 		String name = "userName";
@@ -74,7 +74,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_failure_userAlreadyExistException() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = "userLogin";
 		String name = "userName";
@@ -102,7 +102,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_success_withMalformedId() throws UserAlreadyExistException {
-		Long id = -999l;
+		Long id = -999L;
 		String email = "user@user.com";
 		String login = "userLogin";
 		String name = "userName";
@@ -123,7 +123,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_failure_withEmptyEmail() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "";
 		String login = "userLogin";
 		String name = "userName";
@@ -142,7 +142,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_failure_withNullEmail() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = null;
 		String login = "userLogin";
 		String name = "userName";
@@ -161,7 +161,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_failure_withEmptyLogin() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = "";
 		String name = "userName";
@@ -180,7 +180,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_failure_withNullLogin() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = null;
 		String name = "userName";
@@ -199,7 +199,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_success_withEmptyName() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = "userLogin";
 		String name = "";
@@ -220,7 +220,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_success_withNullLogin() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = "userLogin";
 		String name = null;
@@ -241,7 +241,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_failure_withFutureBirthday() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = "userLogin";
 		String name = "userName";
@@ -260,7 +260,7 @@ class FilmorateApplicationTests {
 
 	@Test
 	void userAdded_failure_withNullBirthday() throws UserAlreadyExistException {
-		Long id = 1l;
+		Long id = 1L;
 		String email = "user@user.com";
 		String login = "userLogin";
 		String name = "userName";
@@ -280,7 +280,7 @@ class FilmorateApplicationTests {
 	@Test
 	void filmAdded_success() throws InvalidFilmDataException, FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "wars are everywhere";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -306,7 +306,7 @@ class FilmorateApplicationTests {
 	@Test
 	void filmAdded_failure_filmAlreadyExistException() throws InvalidFilmDataException, FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "wars are everywhere";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -332,7 +332,7 @@ class FilmorateApplicationTests {
 	void filmAdded_failure_invalidFilmDataExceptionWithNegativeDuration() throws InvalidFilmDataException,
 			FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "wars are everywhere";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -351,7 +351,7 @@ class FilmorateApplicationTests {
 	void filmAdded_failure_invalidFilmDataExceptionWithZeroDuration() throws InvalidFilmDataException,
 			FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "wars are everywhere";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -370,7 +370,7 @@ class FilmorateApplicationTests {
 	void filmAdded_failure_invalidFilmDataExceptionBeforeINITIAL_DATE() throws InvalidFilmDataException,
 			FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "wars are everywhere";
 		Duration duration = Duration.ofMinutes(100);
@@ -389,7 +389,7 @@ class FilmorateApplicationTests {
 	void filmAdded_failure_invalidFilmDataExceptionInFuture() throws InvalidFilmDataException,
 			FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "wars are everywhere";
 		LocalDate releaseDate = LocalDate.of(4000,1,1);
@@ -408,7 +408,7 @@ class FilmorateApplicationTests {
 	@Test
 	void filmAdded_failure_withEmptyName() throws InvalidFilmDataException, FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "";
 		String description = "wars are everywhere";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -427,7 +427,7 @@ class FilmorateApplicationTests {
 	@Test
 	void filmAdded_failure_withNullName() throws InvalidFilmDataException, FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = null;
 		String description = "wars are everywhere";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -446,7 +446,7 @@ class FilmorateApplicationTests {
 	@Test
 	void filmAdded_success_withEmptyDescription() throws InvalidFilmDataException, FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -472,7 +472,7 @@ class FilmorateApplicationTests {
 	@Test
 	void filmAdded_success_withNullDescription() throws InvalidFilmDataException, FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = "";
 		LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -498,7 +498,7 @@ class FilmorateApplicationTests {
 	@Test
 	void filmAdded_failure_withTooBigDescription() throws InvalidFilmDataException, FilmAlreadyExistException {
 		//given
-		Long id = 1l;
+		Long id = 1L;
 		String name = "Wars";
 		String description = new String(new char[201]).replace('\0', ' ');
 		LocalDate releaseDate = LocalDate.of(2000,1,1);

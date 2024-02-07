@@ -11,7 +11,7 @@ import javax.validation.constraints.Past;
 public class User {
     Long id;
     @NotNull
-    @Email(regexp=".+@.+\\..+",message = "wrong email format")
+    @Email(regexp = ".+@.+\\..+", message = "wrong email format")
     String email;
     @NotNull(message = "login cannot be null")
     @NotBlank(message = "login cannot be blank")
