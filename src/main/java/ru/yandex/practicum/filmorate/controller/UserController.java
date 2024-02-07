@@ -8,17 +8,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.errors.UserAlreadyExistException;
 import ru.yandex.practicum.filmorate.errors.InvalidUserDataException;
-
 
 @RestController
 @Slf4j
@@ -87,6 +84,5 @@ public class UserController {
         if ((user.getName() == null) || user.getName().equals("")) {
             user.setName(user.getLogin());
         }
-        
     }
 }

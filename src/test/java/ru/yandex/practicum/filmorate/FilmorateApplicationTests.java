@@ -12,13 +12,13 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
-
+import java.time.LocalDate;
 import ru.yandex.practicum.filmorate.model.*;
 import ru.yandex.practicum.filmorate.errors.*;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.UserController;
 
-import java.time.LocalDate;
+
 
 @SpringBootTest
 class FilmorateApplicationTests {

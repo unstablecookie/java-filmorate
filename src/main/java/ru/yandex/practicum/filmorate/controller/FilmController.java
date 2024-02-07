@@ -13,13 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import javax.validation.Valid;
-
 import ru.yandex.practicum.filmorate.errors.InvalidFilmDataException;
 import ru.yandex.practicum.filmorate.errors.FilmAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
-
-
-
 
 @RestController
 @Slf4j

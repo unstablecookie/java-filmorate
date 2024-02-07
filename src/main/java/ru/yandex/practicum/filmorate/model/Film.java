@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import org.springframework.boot.convert.DurationUnit;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,9 +10,6 @@ import java.time.LocalDate;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-/**
- * Film.
- */
 @Data
 public class Film {
     Long id;
@@ -29,9 +25,11 @@ public class Film {
     Duration duration;
     
     public void setDuration(long minutes) {
+        
         duration = Duration.ofMinutes(minutes);
     }
     public long getDuration() {
+        
         return duration.toMinutes();
     }
 }
