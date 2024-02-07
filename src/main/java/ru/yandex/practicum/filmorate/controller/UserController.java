@@ -21,9 +21,7 @@ import ru.yandex.practicum.filmorate.errors.InvalidUserDataException;
 @Slf4j
 public class UserController {
     private Map<Long, User> mapOfUsers = new HashMap<>();
-    
-    private Long id = 0l;
-
+    private Long id = 0L;
     @GetMapping("/users")
     public List<User> getUsers() {
         log.info("get all users");

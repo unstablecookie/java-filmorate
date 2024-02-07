@@ -20,11 +20,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 @RestController
 @Slf4j
 public class FilmController {
-    
     static final LocalDate INITIAL_DATE = LocalDate.of(1895, 12, 28);
     private Map<Long, Film> mapOfFilms = new HashMap<>();
-    
-    private Long id = 0l;
+    private Long id = 0L;
 
     @GetMapping("/films")
     public List<Film> getFilms() {
