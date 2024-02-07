@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.errors.UserAlreadyExistException;
-import ru.yandex.practicum.filmorate.errors.InvalidUserDataException;
+import ru.yandex.practicum.filmorate.error.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.error.InvalidUserDataException;
 
 @RestController
 @Slf4j
@@ -34,7 +34,7 @@ public class UserController {
         log.debug("login : " + user.getLogin());
         log.info("add new user");
         userValidation(user);
-        if (mapOfUsers.get(user.getId()) != null) {
+        if ((user.getId() != null) && (mapOfUsers.get(user.getId()) != null)) {
             throw new UserAlreadyExistException("user already exists");
         }
         user.setId(++id);
@@ -55,31 +55,7 @@ public class UserController {
         return user;
     }
 
-    public void emailValidation(String email) throws InvalidUserDataException {
-        if ((email == null) || email.equals("") || (email.split("@").length < 2)) {
-            throw new InvalidUserDataException("wrong or empty email field");
-        }
-    }
-
-    public void userLoginValidation(String login) throws InvalidUserDataException {
-        if ((login == null) || login.equals("") || (login.split(" ").length > 1)) {
-            log.debug("login == null : " + (login == null));
-            log.debug("login.equals(\"\") : " + login.equals(""));
-            log.debug("(login.split(\" \").length > 0) : " + (login.split(" ").length > 0));
-            throw new InvalidUserDataException("wrong user login");
-        }
-    }
-
-    public void userBirthdayValidation(LocalDate date) throws InvalidUserDataException {
-        if (date.isAfter(LocalDate.now())) {
-            throw new InvalidUserDataException("wrong birthday date");
-        }
-    }
-
-    public void userValidation(User user) {
-//        emailValidation(user.getEmail());
-//        userLoginValidation(user.getLogin());
-//        userBirthdayValidation(user.getBirthday());
+    private void userValidation(User user) {
         if ((user.getName() == null) || user.getName().equals("")) {
             user.setName(user.getLogin());
         }

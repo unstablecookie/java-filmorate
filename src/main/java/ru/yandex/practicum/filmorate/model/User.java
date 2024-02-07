@@ -9,7 +9,7 @@ import javax.validation.constraints.Past;
 
 @Data
 public class User {
-    Long id;
+    private Long id;
     @NotNull
     @Email(regexp = ".+@.+\\..+", message = "wrong email format")
     String email;

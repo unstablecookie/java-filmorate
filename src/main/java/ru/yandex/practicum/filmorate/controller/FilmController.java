@@ -10,11 +10,12 @@ import org.springframework.web.server.ResponseStatusException;
 import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import javax.validation.Valid;
-import ru.yandex.practicum.filmorate.errors.InvalidFilmDataException;
-import ru.yandex.practicum.filmorate.errors.FilmAlreadyExistException;
+import ru.yandex.practicum.filmorate.error.InvalidFilmDataException;
+import ru.yandex.practicum.filmorate.error.FilmAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 @RestController
@@ -27,14 +28,14 @@ public class FilmController {
     @GetMapping("/films")
     public List<Film> getFilms() {
         log.info("get all films");
-        return List.of(mapOfFilms.values().toArray(new Film[mapOfFilms.values().size()]));
+        return new ArrayList<>(mapOfFilms.values());
     }
 
     @PostMapping("/films")
     public Film addFilm(@Valid  @RequestBody Film film) throws FilmAlreadyExistException, InvalidFilmDataException {
         log.info("add new film");
         filmValidation(film);
-        if (mapOfFilms.get(film.getId()) != null) {
+        if ((film.getId() != null) && (mapOfFilms.get(film.getId()) != null)) {
             throw new FilmAlreadyExistException("film already exists");//TODO
         }
         film.setId(++id);
@@ -55,7 +56,7 @@ public class FilmController {
         return film;
     }
 
-    public void filmValidation(Film film) throws InvalidFilmDataException {
+    private void filmValidation(Film film) throws InvalidFilmDataException {
         if ((film.getDuration() <= 0) || film.getReleaseDate().isBefore(INITIAL_DATE)) {
             log.debug("film.getReleaseDate().isBefore(INITIAL_DATE)) : " + film.getReleaseDate().isBefore(INITIAL_DATE));
             throw new InvalidFilmDataException("wrong film data");

@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 
 @Data
 public class Film {
-    Long id;
+    private Long id;
     @NotBlank(message = "name cannot be blank")
     @NotNull(message = "name cannot be null")
     String name;

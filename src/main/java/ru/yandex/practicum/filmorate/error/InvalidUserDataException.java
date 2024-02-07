@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.errors;
+package ru.yandex.practicum.filmorate.error;
 
 public class InvalidUserDataException extends Exception {
     public InvalidUserDataException() {
