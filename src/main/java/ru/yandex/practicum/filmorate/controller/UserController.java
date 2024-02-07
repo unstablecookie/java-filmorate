@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.error.UserAlreadyExistException;
-import ru.yandex.practicum.filmorate.error.InvalidUserDataException;
 
 @RestController
 @Slf4j
