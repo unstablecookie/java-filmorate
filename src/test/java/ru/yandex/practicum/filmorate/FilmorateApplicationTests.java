@@ -97,7 +97,7 @@ class FilmorateApplicationTests {
 		secondUser.setName(name);
 		secondUser.setBirthday(date);
 		//then
-		assertThrows(UserAlreadyExistException.class, () -> { 
+		assertThrows(UserAlreadyExistException.class, () -> {
 			userController.addUser(secondUser); });
 	}
 
@@ -326,7 +326,7 @@ class FilmorateApplicationTests {
 		secondFilm.setReleaseDate(releaseDate);
 		secondFilm.setDuration(duration.toMinutes());
 		//then
-		assertThrows(FilmAlreadyExistException.class, () -> { 
+		assertThrows(FilmAlreadyExistException.class, () -> {
 			filmController.addFilm(secondFilm); });
 	}
 
@@ -346,7 +346,7 @@ class FilmorateApplicationTests {
 		Duration duration = Duration.ofMinutes(-100);
 		film.setDuration(duration.toMinutes());
 		//then
-		assertThrows(InvalidFilmDataException.class, () -> { 
+		assertThrows(InvalidFilmDataException.class, () -> {
 			filmController.addFilm(film); });
 	}
 
@@ -366,7 +366,7 @@ class FilmorateApplicationTests {
 		Duration duration = Duration.ofMinutes(0);
 		film.setDuration(duration.toMinutes());
 		//then
-		assertThrows(InvalidFilmDataException.class, () -> { 
+		assertThrows(InvalidFilmDataException.class, () -> {
 			filmController.addFilm(film); });
 	}
 
@@ -386,7 +386,7 @@ class FilmorateApplicationTests {
 		LocalDate releaseDate = LocalDate.of(1894,1,1);
 		film.setReleaseDate(releaseDate);
 		//then
-		assertThrows(InvalidFilmDataException.class, () -> { 
+		assertThrows(InvalidFilmDataException.class, () -> {
 			filmController.addFilm(film); });
 	}
 
