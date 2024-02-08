@@ -26,7 +26,7 @@ public class FilmController {
 
     @PostMapping("/films")
     public Film addFilm(@Valid @RequestBody Film film) throws EntityAlreadyExistException {
-        log.info("add new film");
+        log.info("add new film:" + film.getName());
         if ((film.getId() != null) && (mapOfFilms.get(film.getId()) != null)) {
             throw new EntityAlreadyExistException("film already exists");//TODO
         }
@@ -37,13 +37,25 @@ public class FilmController {
 
     @PutMapping("/films/{filmId}")
     public Film updateFilm(@PathVariable Long filmId, @Valid @RequestBody Film film) {
-        log.info("update film id: " + filmId);
         if (filmId == null || (mapOfFilms.get(filmId) == null)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "film not found"
             );
         }
+        log.info("update film id: " + filmId);
         film.setId(filmId);
+        mapOfFilms.put(film.getId(), film);
+        return film;
+    }
+
+    @PutMapping("/films")
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        if (film.getId() == null || (mapOfFilms.get(film.getId()) == null)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "film not found"
+            );
+        }
+        log.info("update film id: " + film.getId());
         mapOfFilms.put(film.getId(), film);
         return film;
     }

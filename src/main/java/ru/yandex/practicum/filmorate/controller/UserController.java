@@ -26,8 +26,7 @@ public class UserController {
 
     @PostMapping("/users")
     public User addUser(@Valid @RequestBody User user) throws EntityAlreadyExistException {
-        log.debug("login : " + user.getLogin());
-        log.info("add new user");
+        log.info("add new user:" + user.getLogin());
         userNameAutoCompletion(user);
         if ((user.getId() != null) && (mapOfUsers.get(user.getId()) != null)) {
             throw new EntityAlreadyExistException("user already exists");
@@ -46,6 +45,19 @@ public class UserController {
             );
         }
         user.setId(userId);
+        userNameAutoCompletion(user);
+        mapOfUsers.put(user.getId(), user);
+        return user;
+    }
+
+    @PutMapping("/users")
+    public User updateUser(@Valid @RequestBody User user) {
+        if (user.getId() == null || (mapOfUsers.get(user.getId()) == null)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "user not found"
+            );
+        }
+        log.info("update user id: " + user.getId());
         userNameAutoCompletion(user);
         mapOfUsers.put(user.getId(), user);
         return user;
