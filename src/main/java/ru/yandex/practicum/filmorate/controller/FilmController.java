@@ -1,27 +1,20 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import lombok.extern.slf4j.Slf4j;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import javax.validation.Valid;
-import ru.yandex.practicum.filmorate.error.InvalidFilmDataException;
-import ru.yandex.practicum.filmorate.error.FilmAlreadyExistException;
+import ru.yandex.practicum.filmorate.error.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 @RestController
 @Slf4j
 public class FilmController {
-    static final LocalDate INITIAL_DATE = LocalDate.of(1895, 12, 28);
     private Map<Long, Film> mapOfFilms = new HashMap<>();
     private Long id = 0L;
 
@@ -32,34 +25,26 @@ public class FilmController {
     }
 
     @PostMapping("/films")
-    public Film addFilm(@Valid  @RequestBody Film film) throws FilmAlreadyExistException, InvalidFilmDataException {
+    public Film addFilm(@Valid @RequestBody Film film) throws EntityAlreadyExistException {
         log.info("add new film");
-        filmValidation(film);
         if ((film.getId() != null) && (mapOfFilms.get(film.getId()) != null)) {
-            throw new FilmAlreadyExistException("film already exists");//TODO
+            throw new EntityAlreadyExistException("film already exists");//TODO
         }
         film.setId(++id);
         mapOfFilms.put(film.getId(), film);
         return film;
     }
 
-    @PutMapping("/films")
-    public Film updateFilm(@Valid @RequestBody Film film) throws InvalidFilmDataException {
-        log.info("update film");
-        if (film.getId() == null || (mapOfFilms.get(film.getId()) == null)) {
+    @PutMapping("/films/{filmId}")
+    public Film updateFilm(@PathVariable Long filmId, @Valid @RequestBody Film film) {
+        log.info("update film id: " + filmId);
+        if (filmId == null || (mapOfFilms.get(filmId) == null)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "film not found"
             );
         }
-        filmValidation(film);
+        film.setId(filmId);
         mapOfFilms.put(film.getId(), film);
         return film;
-    }
-
-    private void filmValidation(Film film) throws InvalidFilmDataException {
-        if ((film.getDuration() <= 0) || film.getReleaseDate().isBefore(INITIAL_DATE)) {
-            log.debug("film.getReleaseDate().isBefore(INITIAL_DATE)) : " + film.getReleaseDate().isBefore(INITIAL_DATE));
-            throw new InvalidFilmDataException("wrong film data");
-        }
     }
 }

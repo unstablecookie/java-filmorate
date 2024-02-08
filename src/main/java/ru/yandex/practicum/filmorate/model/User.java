@@ -2,22 +2,19 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import java.time.LocalDate;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.*;
+import ru.yandex.practicum.filmorate.util.CustomEmailValidator;
 
 @Data
 public class User {
     private Long id;
-    @NotNull
-    @Email(regexp = ".+@.+\\..+", message = "wrong email format")
-    String email;
-    @NotNull(message = "login cannot be null")
+    @CustomEmailValidator
+    private String email;
     @NotBlank(message = "login cannot be blank")
-    String login;
-    String name;
+    @Pattern(regexp = "[a-zA-Z0-9]+", message = "no special characters or space allowed.")
+    private String login;
+    private String name;
     @NotNull
     @Past
-    LocalDate birthday;
+    private LocalDate birthday;
 }

@@ -6,9 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.*;
@@ -17,15 +14,11 @@ import ru.yandex.practicum.filmorate.error.*;
 @SpringBootTest
 public class UserControllerTest {
     @Autowired
-    private Validator validator;
-    @Autowired
     private UserController userController;
 
     @BeforeEach
     void init() {
         userController = new UserController();
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
     }
 
     @Test
@@ -34,7 +27,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void addUser_success() throws UserAlreadyExistException {
+    void addUser_success() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String email = "user@user.com";
@@ -60,7 +53,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void addUser_failure_userAlreadyExistException() throws UserAlreadyExistException {
+    void addUser_failure_userAlreadyExistException() throws EntityAlreadyExistException {
         //given
         String email = "user@user.com";
         String login = "userLogin";
@@ -73,12 +66,12 @@ public class UserControllerTest {
         user.setBirthday(date);
         userController.addUser(user);
         //then
-        assertThrows(UserAlreadyExistException.class, () -> {
+        assertThrows(EntityAlreadyExistException.class, () -> {
             userController.addUser(user); });
     }
 
     @Test
-    void addUser_success_withMalformedId() throws UserAlreadyExistException {
+    void addUser_success_withMalformedId() throws EntityAlreadyExistException {
         Long id = -999L;
         String email = "user@user.com";
         String login = "userLogin";
@@ -99,7 +92,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void addUser_success_withEmptyName() throws UserAlreadyExistException {
+    void addUser_success_withEmptyName() throws EntityAlreadyExistException {
         Long id = 1L;
         String email = "user@user.com";
         String login = "userLogin";
@@ -120,7 +113,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void addUser_success_withNullLogin() throws UserAlreadyExistException {
+    void addUser_success_withNullLogin() throws EntityAlreadyExistException {
         Long id = 1L;
         String email = "user@user.com";
         String login = "userLogin";
@@ -141,7 +134,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void updateUser_success() throws UserAlreadyExistException {
+    void updateUser_success() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String email = "user@user.com";
@@ -158,7 +151,7 @@ public class UserControllerTest {
         String newLogin = "newLogin";
         user.setLogin(newLogin);
         //when
-        userController.updateUser(user);
+        userController.updateUser(id, user);
         List<User> users = userController.getUsers();
         User firstUser = users.get(0);
         //then
@@ -171,7 +164,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void updateUser_failure_withNullId() throws UserAlreadyExistException {
+    void updateUser_failure_withNullId() throws EntityAlreadyExistException {
         //given
         String email = "user@user.com";
         String login = "userLogin";
@@ -184,15 +177,15 @@ public class UserControllerTest {
         user.setBirthday(date);
         userController.addUser(user);
         //when
-        user.setId(null);
+        Long nullId = null;
         //then
         assertThrows(ResponseStatusException.class, () -> {
-            userController.updateUser(user);
+            userController.updateUser(nullId, user);
         });
     }
 
     @Test
-    void updateUser_failure_withWrongId() throws UserAlreadyExistException {
+    void updateUser_failure_withWrongId() throws EntityAlreadyExistException {
         //given
         String email = "user@user.com";
         String login = "userLogin";
@@ -205,15 +198,15 @@ public class UserControllerTest {
         user.setBirthday(date);
         userController.addUser(user);
         //when
-        user.setId(-999L);
+        Long wrongId = -999L;
         //then
         assertThrows(ResponseStatusException.class, () -> {
-            userController.updateUser(user);
+            userController.updateUser(wrongId, user);
         });
     }
 
     @Test
-    void getUsers_success() throws UserAlreadyExistException {
+    void getUsers_success() throws EntityAlreadyExistException {
         //given
         String email = "user@user.com";
         String login = "userLogin";
@@ -236,7 +229,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getUsers_success_emptyCollection() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void getUsers_success_emptyCollection() {
         //when
         List<User> users = userController.getUsers();
         //then

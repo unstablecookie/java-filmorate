@@ -7,9 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.Duration;
 import java.util.List;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.*;
@@ -18,15 +15,11 @@ import ru.yandex.practicum.filmorate.error.*;
 @SpringBootTest
 public class FilmControllerTest {
     @Autowired
-    private Validator validator;
-    @Autowired
     private FilmController filmController;
 
     @BeforeEach
     void init() {
         filmController = new FilmController();
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
     }
 
     @Test
@@ -35,7 +28,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void addFilm_success() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void addFilm_success() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String name = "Wars";
@@ -61,7 +54,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void addFilm_failure_filmAlreadyExistException() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void addFilm_failure_EntityAlreadyExistException() throws EntityAlreadyExistException {
         //given
         String name = "Wars";
         String description = "wars are everywhere";
@@ -74,72 +67,12 @@ public class FilmControllerTest {
         film.setDuration(duration.toMinutes());
         filmController.addFilm(film);
         //then
-        assertThrows(FilmAlreadyExistException.class, () -> {
+        assertThrows(EntityAlreadyExistException.class, () -> {
             filmController.addFilm(film); });
     }
 
     @Test
-    void addFilm_failure_invalidFilmDataExceptionWithNegativeDuration() throws InvalidFilmDataException,
-            FilmAlreadyExistException {
-        //given
-        Long id = 1L;
-        String name = "Wars";
-        String description = "wars are everywhere";
-        LocalDate releaseDate = LocalDate.of(2000,1,1);
-        Film film = new Film();
-        film.setName(name);
-        film.setDescription(description);
-        film.setReleaseDate(releaseDate);
-        //when
-        Duration duration = Duration.ofMinutes(-100);
-        film.setDuration(duration.toMinutes());
-        //then
-        assertThrows(InvalidFilmDataException.class, () -> {
-            filmController.addFilm(film); });
-    }
-
-    @Test
-    void addFilm_failure_invalidFilmDataExceptionWithZeroDuration() throws InvalidFilmDataException,
-            FilmAlreadyExistException {
-        //given
-        Long id = 1L;
-        String name = "Wars";
-        String description = "wars are everywhere";
-        LocalDate releaseDate = LocalDate.of(2000,1,1);
-        Film film = new Film();
-        film.setName(name);
-        film.setDescription(description);
-        film.setReleaseDate(releaseDate);
-        //when
-        Duration duration = Duration.ofMinutes(0);
-        film.setDuration(duration.toMinutes());
-        //then
-        assertThrows(InvalidFilmDataException.class, () -> {
-            filmController.addFilm(film); });
-    }
-
-    @Test
-    void addFilm_failure_invalidFilmDataExceptionBeforeINITIAL_DATE() throws InvalidFilmDataException,
-            FilmAlreadyExistException {
-        //given
-        Long id = 1L;
-        String name = "Wars";
-        String description = "wars are everywhere";
-        Duration duration = Duration.ofMinutes(100);
-        Film film = new Film();
-        film.setName(name);
-        film.setDescription(description);
-        film.setDuration(duration.toMinutes());
-        //when
-        LocalDate releaseDate = LocalDate.of(1894,1,1);
-        film.setReleaseDate(releaseDate);
-        //then
-        assertThrows(InvalidFilmDataException.class, () -> {
-            filmController.addFilm(film); });
-    }
-
-    @Test
-    void addFilm_success_withEmptyDescription() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void addFilm_success_withEmptyDescription() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String name = "Wars";
@@ -165,7 +98,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void addFilm_success_withNullDescription() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void addFilm_success_withNullDescription() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String name = "Wars";
@@ -191,7 +124,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void updateFilm_success() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void updateFilm_success() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String name = "Wars";
@@ -208,7 +141,7 @@ public class FilmControllerTest {
         String newName = "newWars";
         film.setName(newName);
         //when
-        filmController.updateFilm(film);
+        filmController.updateFilm(id, film);
         List<Film> films = filmController.getFilms();
         Film firstFilm = films.get(0);
         //then
@@ -221,7 +154,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void updateFilm_failure_withNullId() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void updateFilm_failure_withNullId() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String name = "Wars";
@@ -238,15 +171,15 @@ public class FilmControllerTest {
         String newName = "newWars";
         film.setName(newName);
         //when
-        film.setId(null);
+        Long nullId = null;
         //then
         assertThrows(ResponseStatusException.class, () -> {
-            filmController.updateFilm(film);
+            filmController.updateFilm(nullId, film);
         });
     }
 
     @Test
-    void updateFilm_failure_withWrongId() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void updateFilm_failure_withWrongId() throws EntityAlreadyExistException {
         //given
         Long id = 1L;
         String name = "Wars";
@@ -263,15 +196,15 @@ public class FilmControllerTest {
         String newName = "newWars";
         film.setName(newName);
         //when
-        film.setId(-999L);
+        Long wrongId = -999L;
         //then
         assertThrows(ResponseStatusException.class, () -> {
-            filmController.updateFilm(film);
+            filmController.updateFilm(wrongId, film);
         });
     }
 
     @Test
-    void getFilms_success() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void getFilms_success() throws EntityAlreadyExistException {
         //given
         String name = "Wars";
         String description = "wars are everywhere";
@@ -294,7 +227,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void getFilms_success_emptyCollection() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void getFilms_success_emptyCollection() {
         //when
         List<Film> films = filmController.getFilms();
         //then

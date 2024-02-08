@@ -2,18 +2,15 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.error.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.error.EntityAlreadyExistException;
 
 @RestController
 @Slf4j
@@ -24,36 +21,37 @@ public class UserController {
     @GetMapping("/users")
     public List<User> getUsers() {
         log.info("get all users");
-        return List.of(mapOfUsers.values().toArray(new User[mapOfUsers.values().size()]));
+        return new ArrayList<>(mapOfUsers.values());
     }
 
     @PostMapping("/users")
-    public User addUser(@Valid @RequestBody User user) throws UserAlreadyExistException {
+    public User addUser(@Valid @RequestBody User user) throws EntityAlreadyExistException {
         log.debug("login : " + user.getLogin());
         log.info("add new user");
-        userValidation(user);
+        userNameAutoCompletion(user);
         if ((user.getId() != null) && (mapOfUsers.get(user.getId()) != null)) {
-            throw new UserAlreadyExistException("user already exists");
+            throw new EntityAlreadyExistException("user already exists");
         }
         user.setId(++id);
         mapOfUsers.put(user.getId(), user);
         return user;
     }
 
-    @PutMapping("/users")
-    public User updateUser(@Valid @RequestBody User user) {
-        log.info("update user");
-        if (user.getId() == null || (mapOfUsers.get(user.getId()) == null)) {
+    @PutMapping("/users/{userId}")
+    public User updateUser(@PathVariable Long userId, @Valid @RequestBody User user) {
+        log.info("update user id: " + userId);
+        if (userId == null || (mapOfUsers.get(userId) == null)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "user not found"
             );
         }
-        userValidation(user);
+        user.setId(userId);
+        userNameAutoCompletion(user);
         mapOfUsers.put(user.getId(), user);
         return user;
     }
 
-    private void userValidation(User user) {
+    private void userNameAutoCompletion(User user) {
         if ((user.getName() == null) || user.getName().equals("")) {
             user.setName(user.getLogin());
         }

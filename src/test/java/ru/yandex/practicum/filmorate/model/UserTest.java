@@ -13,24 +13,28 @@ import ru.yandex.practicum.filmorate.error.*;
 
 public class UserTest {
     private Validator validator;
+    private User user;
 
     @BeforeEach
     void init() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
+        String email = "user@user.com";
+        String login = "userLogin";
+        String name = "userName";
+        LocalDate date = LocalDate.of(2000,1,1);
+        user = new User();
+        user.setEmail(email);
+        user.setLogin(login);
+        user.setName(name);
+        user.setBirthday(date);
     }
 
     @Test
-    void validateUserEmail_failure_emptyEmail() throws UserAlreadyExistException {
+    void validateUserEmail_failure_emptyEmail() throws EntityAlreadyExistException {
+        //given
         String email = "";
-        String login = "userLogin";
-        String name = "userName";
-        LocalDate date = LocalDate.of(2000,1,1);
-        User user = new User();
         user.setEmail(email);
-        user.setLogin(login);
-        user.setName(name);
-        user.setBirthday(date);
         //when
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         //then
@@ -38,16 +42,10 @@ public class UserTest {
     }
 
     @Test
-    void validateUserEmail_failure_nullEmail() throws UserAlreadyExistException {
+    void validateUserEmail_failure_nullEmail() throws EntityAlreadyExistException {
+        //given
         String email = null;
-        String login = "userLogin";
-        String name = "userName";
-        LocalDate date = LocalDate.of(2000,1,1);
-        User user = new User();
         user.setEmail(email);
-        user.setLogin(login);
-        user.setName(name);
-        user.setBirthday(date);
         //when
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         //then
@@ -55,16 +53,10 @@ public class UserTest {
     }
 
     @Test
-    void validateUserLogin_failure_emptyLogin() throws UserAlreadyExistException {
-        String email = "user@user.com";
+    void validateUserLogin_failure_emptyLogin() throws EntityAlreadyExistException {
+        //given
         String login = "";
-        String name = "userName";
-        LocalDate date = LocalDate.of(2000,1,1);
-        User user = new User();
-        user.setEmail(email);
         user.setLogin(login);
-        user.setName(name);
-        user.setBirthday(date);
         //when
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         //then
@@ -72,16 +64,21 @@ public class UserTest {
     }
 
     @Test
-    void validateUserLogin_failure_nullLogin() throws UserAlreadyExistException {
-        String email = "user@user.com";
+    void validateUserLogin_failure_loginWithSpecialCharacter() throws EntityAlreadyExistException {
+        //given
+        String login = "log in";
+        user.setLogin(login);
+        //when
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        //then
+        assertFalse(violations.isEmpty());
+    }
+
+    @Test
+    void validateUserLogin_failure_nullLogin() throws EntityAlreadyExistException {
+        //given
         String login = null;
-        String name = "userName";
-        LocalDate date = LocalDate.of(2000,1,1);
-        User user = new User();
-        user.setEmail(email);
         user.setLogin(login);
-        user.setName(name);
-        user.setBirthday(date);
         //when
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         //then
@@ -89,15 +86,9 @@ public class UserTest {
     }
 
     @Test
-    void validateUserBirthday_failure_futureBirthday() throws UserAlreadyExistException {
-        String email = "user@user.com";
-        String login = "userLogin";
-        String name = "userName";
+    void validateUserBirthday_failure_futureBirthday() throws EntityAlreadyExistException {
+        //given
         LocalDate date = LocalDate.of(4000,1,1);
-        User user = new User();
-        user.setEmail(email);
-        user.setLogin(login);
-        user.setName(name);
         user.setBirthday(date);
         //when
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -106,15 +97,9 @@ public class UserTest {
     }
 
     @Test
-    void validateUserBirthday_failure_nullBirthday() throws UserAlreadyExistException {
-        String email = "user@user.com";
-        String login = "userLogin";
-        String name = "userName";
+    void validateUserBirthday_failure_nullBirthday() throws EntityAlreadyExistException {
+        //given
         LocalDate date = null;
-        User user = new User();
-        user.setEmail(email);
-        user.setLogin(login);
-        user.setName(name);
         user.setBirthday(date);
         //when
         Set<ConstraintViolation<User>> violations = validator.validate(user);

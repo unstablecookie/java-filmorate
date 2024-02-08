@@ -14,25 +14,27 @@ import ru.yandex.practicum.filmorate.error.*;
 
 public class FilmTest {
     private Validator validator;
+    private Film film;
 
     @BeforeEach
     void init() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-    }
-
-    @Test
-    void validateFilmDate_failure_dateInFuture() throws InvalidFilmDataException,
-            FilmAlreadyExistException {
-        //given
         String name = "Wars";
         String description = "wars are everywhere";
-        LocalDate releaseDate = LocalDate.of(4000,1,1);
+        LocalDate releaseDate = LocalDate.of(2000,1,1);
         Duration duration = Duration.ofMinutes(100);
-        Film film = new Film();
+        film = new Film();
         film.setDuration(duration.toMinutes());
         film.setName(name);
         film.setDescription(description);
+        film.setReleaseDate(releaseDate);
+    }
+
+    @Test
+    void validateFilmDate_failure_dateInFuture() throws EntityAlreadyExistException {
+        //given
+        LocalDate releaseDate = LocalDate.of(4000,1,1);
         film.setReleaseDate(releaseDate);
         //when
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -41,17 +43,32 @@ public class FilmTest {
     }
 
     @Test
-    void validateFilmName_failure_emptyName() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void validateFilmDate_failure_dateIsNull() throws EntityAlreadyExistException {
+        //given
+        LocalDate releaseDate = null;
+        film.setReleaseDate(releaseDate);
+        //when
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        //then
+        assertFalse(violations.isEmpty());
+    }
+
+    @Test
+    void validateFilmDate_failure_dateIsBeforeInitialDate() throws EntityAlreadyExistException {
+        //given
+        LocalDate releaseDate = LocalDate.of(1000,1,1);
+        film.setReleaseDate(releaseDate);
+        //when
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        //then
+        assertFalse(violations.isEmpty());
+    }
+
+    @Test
+    void validateFilmName_failure_emptyName() throws EntityAlreadyExistException {
         //given
         String name = "";
-        String description = "wars are everywhere";
-        LocalDate releaseDate = LocalDate.of(2000,1,1);
-        Duration duration = Duration.ofMinutes(100);
-        Film film = new Film();
         film.setName(name);
-        film.setDescription(description);
-        film.setReleaseDate(releaseDate);
-        film.setDuration(duration.toMinutes());
         //when
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         //then
@@ -59,17 +76,10 @@ public class FilmTest {
     }
 
     @Test
-    void validateFilmName_failure_nullName() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void validateFilmName_failure_nullName() throws EntityAlreadyExistException {
         //given
         String name = null;
-        String description = "wars are everywhere";
-        LocalDate releaseDate = LocalDate.of(2000,1,1);
-        Duration duration = Duration.ofMinutes(100);
-        Film film = new Film();
         film.setName(name);
-        film.setDescription(description);
-        film.setReleaseDate(releaseDate);
-        film.setDuration(duration.toMinutes());
         //when
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         //then
@@ -77,17 +87,10 @@ public class FilmTest {
     }
 
     @Test
-    void validateFilmDescription_failure_tooBigDescription() throws InvalidFilmDataException, FilmAlreadyExistException {
+    void validateFilmDescription_failure_tooBigDescription() throws EntityAlreadyExistException {
         //given
-        String name = "Wars";
         String description = new String(new char[201]).replace('\0', ' ');
-        LocalDate releaseDate = LocalDate.of(2000,1,1);
-        Duration duration = Duration.ofMinutes(100);
-        Film film = new Film();
-        film.setName(name);
         film.setDescription(description);
-        film.setReleaseDate(releaseDate);
-        film.setDuration(duration.toMinutes());
         //when
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         //then

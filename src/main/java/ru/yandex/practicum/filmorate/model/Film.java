@@ -2,10 +2,10 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import org.springframework.boot.convert.DurationUnit;
+import ru.yandex.practicum.filmorate.util.DurationAnnotation;
+import ru.yandex.practicum.filmorate.util.ReleaseDateAnnotation;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -14,15 +14,14 @@ import java.time.temporal.ChronoUnit;
 public class Film {
     private Long id;
     @NotBlank(message = "name cannot be blank")
-    @NotNull(message = "name cannot be null")
-    String name;
+    private String name;
     @Size(max = 200)
-    String description;
-    @Past
-    @NotNull(message = "release date cannot be null")
-    LocalDate releaseDate;
+    private String description;
+    @ReleaseDateAnnotation
+    private LocalDate releaseDate;
     @DurationUnit(ChronoUnit.MINUTES)
-    Duration duration;
+    @DurationAnnotation
+    private Duration duration;
 
     public void setDuration(long minutes) {
         duration = Duration.ofMinutes(minutes);
