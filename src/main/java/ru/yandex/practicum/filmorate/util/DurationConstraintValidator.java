@@ -6,7 +6,8 @@ import java.time.Duration;
 
 public class DurationConstraintValidator implements ConstraintValidator<DurationAnnotation, Duration> {
     @Override
-    public void initialize(DurationAnnotation constraintAnnotation) {}
+    public void initialize(DurationAnnotation constraintAnnotation) {
+    }
 
     @Override
     public boolean isValid(Duration duration, ConstraintValidatorContext ctx) {
