@@ -35,27 +35,19 @@ public class FilmController {
         return film;
     }
 
-    @PutMapping("/films/{filmId}")
-    public Film updateFilm(@PathVariable Long filmId, @Valid @RequestBody Film film) {
+    @PutMapping(value = {"/films","/films/{filmId}"})
+    public Film updateFilm(@PathVariable(required = false) Long filmId, @Valid @RequestBody Film film) {
+        if (filmId == null) {
+            filmId = film.getId();
+        }
+        log.info("update film id: " + filmId);
         if (filmId == null || (mapOfFilms.get(filmId) == null)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "film not found"
             );
         }
-        log.info("update film id: " + filmId);
-        film.setId(filmId);
-        mapOfFilms.put(film.getId(), film);
-        return film;
-    }
 
-    @PutMapping("/films")
-    public Film updateFilm(@Valid @RequestBody Film film) {
-        if (film.getId() == null || (mapOfFilms.get(film.getId()) == null)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "film not found"
-            );
-        }
-        log.info("update film id: " + film.getId());
+        film.setId(filmId);
         mapOfFilms.put(film.getId(), film);
         return film;
     }

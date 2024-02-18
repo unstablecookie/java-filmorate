@@ -36,28 +36,19 @@ public class UserController {
         return user;
     }
 
-    @PutMapping("/users/{userId}")
-    public User updateUser(@PathVariable Long userId, @Valid @RequestBody User user) {
+    @PutMapping(value = {"/users","/users/{userId}"})
+    public User updateUser(@PathVariable(required = false) Long userId, @Valid @RequestBody User user) {
+        if (userId == null) {
+            userId = user.getId();
+        }
         log.info("update user id: " + userId);
         if (userId == null || (mapOfUsers.get(userId) == null)) {
+            
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "user not found"
             );
         }
         user.setId(userId);
-        userNameAutoCompletion(user);
-        mapOfUsers.put(user.getId(), user);
-        return user;
-    }
-
-    @PutMapping("/users")
-    public User updateUser(@Valid @RequestBody User user) {
-        if (user.getId() == null || (mapOfUsers.get(user.getId()) == null)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "user not found"
-            );
-        }
-        log.info("update user id: " + user.getId());
         userNameAutoCompletion(user);
         mapOfUsers.put(user.getId(), user);
         return user;
