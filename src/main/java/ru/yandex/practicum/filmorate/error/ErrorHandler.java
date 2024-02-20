@@ -12,12 +12,12 @@ public class ErrorHandler {
 
     @ExceptionHandler
     public ResponseEntity<JsonResponse> handleUserNotFound(final UserNotFoundException e) {
-        return new ResponseEntity<JsonResponse>(new JsonResponse(e.getMessage()), HttpStatus.NOT_FOUND) ;
+        return new ResponseEntity<JsonResponse>(new JsonResponse(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     public ResponseEntity<JsonResponse> handleFilmNotFound(final FilmNotFoundException e) {
-        return new ResponseEntity<JsonResponse>(new JsonResponse(e.getMessage()), HttpStatus.NOT_FOUND) ;
+        return new ResponseEntity<JsonResponse>(new JsonResponse(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     private class JsonResponse {
