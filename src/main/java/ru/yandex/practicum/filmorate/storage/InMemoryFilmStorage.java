@@ -16,7 +16,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
 
-    private Map<Long, Film> mapOfFilms = new HashMap<>();   
+    private Map<Long, Film> mapOfFilms = new HashMap<>();
     private Long id = 0L;
 
     public List<Film> getFilms() {
