@@ -15,7 +15,7 @@ import ru.yandex.practicum.filmorate.storage.UserStorage;
 public class UserService {
 
     private final UserStorage userStorage;
-    
+
     @Autowired
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
@@ -42,11 +42,11 @@ public class UserService {
     public List<User> getFriends(Long userId) {
         User user = userStorage.getUser(userId);
         List<User> friends = user.getFriends().stream()
-                .map(x->userStorage.getUser(x))
+                .map(x -> userStorage.getUser(x))
                 .collect(Collectors.toList());
         return friends;
     }
-    
+
     public List<User> getCommonFriends(Long userId, Long friendId) {
         User user = userStorage.getUser(userId);
         User friend = userStorage.getUser(friendId);
@@ -55,7 +55,7 @@ public class UserService {
         Set<Long> commonFriends = new HashSet<Long>(friends);
         commonFriends.retainAll(friendFriends);
         return commonFriends.stream()
-                .map(x->userStorage.getUser(x))
+                .map(x -> userStorage.getUser(x))
                 .collect(Collectors.toList());
     }
 }
