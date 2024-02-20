@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 @Component
@@ -26,7 +26,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film getFilm(Long filmId) {
         Film film = mapOfFilms.get(filmId);
         if (film == null) {
-            throw new FilmNotFoundException("film not found");
+            throw new EntityNotFoundException("film not found");
         }
         return film;
     }

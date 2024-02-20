@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -28,6 +28,22 @@ public class UserService {
         friends.add(friend.getId());
         Set<Long> friendFriends = friend.getFriends();
         friendFriends.add(user.getId());
+    }
+
+    public List<User> getUsers() {
+        return userStorage.getUsers();
+    }
+
+    public User addUser(User user) throws EntityAlreadyExistException {
+        return userStorage.addUser(user);
+    }
+
+    public User updateUser(Long userId, User user) {
+        return userStorage.updateUser(userId, user);
+    }
+
+    public User getUser(Long id) {
+        return userStorage.getUser(id);
     }
 
     public void removeFriend(Long userId, Long friendId) {

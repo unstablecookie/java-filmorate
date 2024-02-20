@@ -12,7 +12,7 @@ import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.*;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 
 @SpringBootTest
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
@@ -185,7 +185,7 @@ public class UserControllerTest {
         user.setId(null);
         Long nullId = null;
         //then
-        assertThrows(UserNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             userController.updateUser(nullId, user);
         });
     }
@@ -206,7 +206,7 @@ public class UserControllerTest {
         //when
         Long wrongId = -999L;
         //then
-        assertThrows(UserNotFoundException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             userController.updateUser(wrongId, user);
         });
     }

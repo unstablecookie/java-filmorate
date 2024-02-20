@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 
 @Component
 @Slf4j
@@ -23,7 +23,7 @@ public class InMemoryUserStorage implements UserStorage {
     public User getUser(Long userId) {
         User user = mapOfUsers.get(userId);
         if (user == null) {
-            throw new UserNotFoundException("user not found");
+            throw new EntityNotFoundException("user not found");
         }
         return user;
     }
@@ -44,7 +44,7 @@ public class InMemoryUserStorage implements UserStorage {
         }
         log.info("update user id: " + userId);
         if (userId == null || (mapOfUsers.get(userId) == null)) {
-            throw new UserNotFoundException("user not found");
+            throw new EntityNotFoundException("user not found");
         }
         userNameAutoCompletion(user);
         mapOfUsers.put(user.getId(), user);
