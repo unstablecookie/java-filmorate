@@ -33,7 +33,7 @@ public class Film {
     public long getDuration() {
         return duration.toMinutes();
     }
-    
+
     public int getLikesCount() {
         return likes.size();
     }
