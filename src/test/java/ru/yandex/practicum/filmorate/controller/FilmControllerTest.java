@@ -1,26 +1,31 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.Duration;
 import java.util.List;
 import java.time.LocalDate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.server.ResponseStatusException;
+import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.*;
-import ru.yandex.practicum.filmorate.error.*;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 @SpringBootTest
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 public class FilmControllerTest {
     @Autowired
     private FilmController filmController;
 
-    @BeforeEach
-    void init() {
-        filmController = new FilmController();
-    }
+    @Autowired
+    private FilmStorage filmStorage;
+
+    @Autowired
+    private FilmService filmService;
 
     @Test
     void filmContextLoads_success() {
@@ -156,7 +161,6 @@ public class FilmControllerTest {
     @Test
     void updateFilm_failure_withNullId() throws EntityAlreadyExistException {
         //given
-        Long id = 1L;
         String name = "Wars";
         String description = "wars are everywhere";
         LocalDate releaseDate = LocalDate.of(2000,1,1);
@@ -167,10 +171,10 @@ public class FilmControllerTest {
         film.setReleaseDate(releaseDate);
         film.setDuration(duration.toMinutes());
         filmController.addFilm(film);
-        film.setId(id);
         String newName = "newWars";
         film.setName(newName);
         //when
+        film.setId(null);
         Long nullId = null;
         //then
         assertThrows(ResponseStatusException.class, () -> {

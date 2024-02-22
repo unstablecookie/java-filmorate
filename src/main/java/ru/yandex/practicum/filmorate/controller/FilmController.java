@@ -1,62 +1,62 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.Set;
 import javax.validation.Valid;
-import ru.yandex.practicum.filmorate.error.EntityAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
+@RequestMapping(value = "/films")
 public class FilmController {
-    private Map<Long, Film> mapOfFilms = new HashMap<>();
-    private Long id = 0L;
+    private final FilmService filmService;
 
-    @GetMapping("/films")
+    @GetMapping
     public List<Film> getFilms() {
         log.info("get all films");
-        return new ArrayList<>(mapOfFilms.values());
+        return filmService.getFilms();
     }
 
-    @PostMapping("/films")
+    @GetMapping(value = "/{id}")
+    public Film getFilm(@PathVariable(required = true) Long id) {
+        log.info("get film id :" + id);
+        return filmService.getFilm(id);
+    }
+
+    @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) throws EntityAlreadyExistException {
         log.info("add new film:" + film.getName());
-        if ((film.getId() != null) && (mapOfFilms.get(film.getId()) != null)) {
-            throw new EntityAlreadyExistException("film already exists");//TODO
-        }
-        film.setId(++id);
-        mapOfFilms.put(film.getId(), film);
-        return film;
+        return filmService.addFilm(film);
     }
 
-    @PutMapping("/films/{filmId}")
-    public Film updateFilm(@PathVariable Long filmId, @Valid @RequestBody Film film) {
-        if (filmId == null || (mapOfFilms.get(filmId) == null)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "film not found"
-            );
-        }
-        log.info("update film id: " + filmId);
-        film.setId(filmId);
-        mapOfFilms.put(film.getId(), film);
-        return film;
+    @PutMapping(value = {"","/{filmId}"})
+    public Film updateFilm(@PathVariable(required = false) Long filmId, @Valid @RequestBody Film film) {
+        return filmService.updateFilm(filmId, film);
     }
 
-    @PutMapping("/films")
-    public Film updateFilm(@Valid @RequestBody Film film) {
-        if (film.getId() == null || (mapOfFilms.get(film.getId()) == null)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "film not found"
-            );
-        }
-        log.info("update film id: " + film.getId());
-        mapOfFilms.put(film.getId(), film);
-        return film;
+    @PutMapping(value = "/{id}/like/{userId}")
+    public void addLike(@PathVariable Long id,
+                        @PathVariable Long userId) {
+        log.info("add like to movie id:" + id + " from user id:" + userId);
+        filmService.addLike(id, userId);
+    }
+
+    @DeleteMapping(value = "/{id}/like/{userId}")
+    public void removeLike(@PathVariable Long id,
+                           @PathVariable Long userId) {
+        log.info("remove like from movie id:" + id + " from user id:" + userId);
+        filmService.removeLike(id, userId);
+    }
+
+    @GetMapping(value = "/popular")
+    public Set<Film> getTopFilms(@RequestParam(defaultValue = "10", required = false) Integer count) {
+        log.info("get top " + count + " movies");
+        return filmService.getTopFilms(count);
     }
 }

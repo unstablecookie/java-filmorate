@@ -9,7 +9,8 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 import java.time.LocalDate;
-import ru.yandex.practicum.filmorate.error.*;
+
+import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 
 public class UserTest {
     private Validator validator;
