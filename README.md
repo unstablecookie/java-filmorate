@@ -4,7 +4,7 @@
 
 ER диаграмма описывающая структуру БД
 
-![er diagram](/pgsqlfilmorate.png)
+![er diagram](/filmoratedbH2.png)
 
 Прмиеры запросов:
 
