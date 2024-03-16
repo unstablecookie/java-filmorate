@@ -101,5 +101,6 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void approveFriend(Long id, Long friendId) {}
+    public void approveFriend(Long id, Long friendId) {
+    }
 }
