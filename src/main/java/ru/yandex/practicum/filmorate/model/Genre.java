@@ -47,9 +47,9 @@ public enum Genre {
     @JsonCreator
     public static Genre[] fromId(Integer[] ids) {
         Genre[] genres = new Genre[ids.length];
-        for (int i = 0; i < ids.length ; i++) {
+        for (int i = 0; i < ids.length; i++) {
             genres[i] = FORMAT_MAP.get(ids[i]);
         }
         return genres;
-    } 
+    }
 }
