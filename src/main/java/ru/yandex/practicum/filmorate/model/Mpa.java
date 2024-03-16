@@ -41,5 +41,5 @@ public enum Mpa {
         return Optional
                 .ofNullable(FORMAT_MAP.get(id))
                 .orElse(null);
-    }    
+    }
 }
