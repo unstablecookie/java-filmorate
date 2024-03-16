@@ -24,7 +24,7 @@ public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
     private final UserStorage userStorage;
 
-    public FilmDbStorage(JdbcTemplate jdbcTemplate,@Qualifier("userDbStorage") UserStorage userStorage ) {
+    public FilmDbStorage(JdbcTemplate jdbcTemplate,@Qualifier("userDbStorage") UserStorage userStorage) {
         this.jdbcTemplate = jdbcTemplate;
         this.userStorage = userStorage;
     }
@@ -34,8 +34,9 @@ public class FilmDbStorage implements FilmStorage {
         String request = "select * from movies";
         return jdbcTemplate.query(request, (rs, rowNum) -> mapFilm(rs))
                 .stream()
-                .map(x->{x.setLikes(mapFilmLikes(x.getId()));
-                            return x;})
+                .map(x -> {
+                    x.setLikes(mapFilmLikes(x.getId()));
+                            return x; })
                 .collect(Collectors.toList());
     }
 
@@ -72,7 +73,7 @@ public class FilmDbStorage implements FilmStorage {
         }
         jdbcTemplate.update("update movies set name = ?, description = ?, release_date = ?, duration = ?, " +
                         " movie_mpa_id = ? where film_id = ?", film.getName(), film.getDescription(),
-                film.getReleaseDate(), film.getDuration(), film.getMpa().getId() ,filmId);
+                film.getReleaseDate(), film.getDuration(), film.getMpa().getId() , filmId);
         return film;
     }
 
@@ -91,20 +92,20 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public void addLike(Long filmId, Long userId) {
-        if(!filmExistsInTable(filmId)) {
+        if (!filmExistsInTable(filmId)) {
             throw new EntityNotFoundException("film not found");
         }
-        if((userStorage.getUser(userId) != null)) {
+        if ((userStorage.getUser(userId) != null)) {
             jdbcTemplate.update("INSERT INTO likes (film_id, user_id) VALUES (?, ?);", filmId, userId);
         }
     }
 
     @Override
     public void removeLike(Long filmId, Long userId) {
-        if(!filmExistsInTable(filmId)) {
+        if (!filmExistsInTable(filmId)) {
             throw new EntityNotFoundException("film not found");
         }
-        if((userStorage.getUser(userId) != null)) {
+        if ((userStorage.getUser(userId) != null)) {
             jdbcTemplate.update("DELETE FROM likes WHERE film_id = ? AND user_id = ?;", filmId, userId);
         }
         
@@ -117,8 +118,9 @@ public class FilmDbStorage implements FilmStorage {
                 "ON m.FILM_ID = TOP.film_id;";
         return jdbcTemplate.query(request, (rs, rowNum) -> mapFilm(rs), count)
                 .stream()
-                .map(x->{x.setLikes(mapFilmLikes(x.getId()));
-                    return x;})
+                .map(x -> {
+                    x.setLikes(mapFilmLikes(x.getId()));
+                    return x; })
                 .collect(Collectors.toList());
     }
 
