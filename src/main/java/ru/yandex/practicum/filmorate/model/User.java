@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 import ru.yandex.practicum.filmorate.util.CustomEmailValidator;
 
 @Data
@@ -19,5 +21,14 @@ public class User {
     @NotNull
     @Past
     private LocalDate birthday;
-    private final Set<Long> friends = new HashSet<>();
+    private Set<Long> friends = new HashSet<>();
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("login", login);
+        values.put("name", name);
+        values.put("email", email);
+        values.put("birthday", birthday);
+        return values;
+    }
 }

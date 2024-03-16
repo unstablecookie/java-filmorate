@@ -9,8 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 public class Film {
@@ -24,7 +23,9 @@ public class Film {
     @DurationUnit(ChronoUnit.MINUTES)
     @DurationAnnotation
     private Duration duration;
-    private final Set<Long> likes = new HashSet<>();
+    private List<Genre> genres;
+    private Mpa mpa;
+    private Set<Long> likes = new HashSet<>();
 
     public void setDuration(long minutes) {
         duration = Duration.ofMinutes(minutes);
@@ -36,5 +37,15 @@ public class Film {
 
     public int getLikesCount() {
         return likes.size();
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("name", name);
+        values.put("description", description);
+        values.put("release_date", releaseDate);
+        values.put("duration", getDuration());
+        values.put("movie_mpa_id", mpa.getId());
+        return values;
     }
 }

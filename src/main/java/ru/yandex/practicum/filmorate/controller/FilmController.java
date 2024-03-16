@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
-import java.util.Set;
 import javax.validation.Valid;
 import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -55,7 +54,7 @@ public class FilmController {
     }
 
     @GetMapping(value = "/popular")
-    public Set<Film> getTopFilms(@RequestParam(defaultValue = "10", required = false) Integer count) {
+    public List<Film> getTopFilms(@RequestParam(defaultValue = "10", required = false) Integer count) {
         log.info("get top " + count + " movies");
         return filmService.getTopFilms(count);
     }
