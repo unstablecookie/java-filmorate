@@ -73,7 +73,7 @@ public class FilmDbStorage implements FilmStorage {
         }
         jdbcTemplate.update("update movies set name = ?, description = ?, release_date = ?, duration = ?, " +
                         " movie_mpa_id = ? where film_id = ?", film.getName(), film.getDescription(),
-                film.getReleaseDate(), film.getDuration(), film.getMpa().getId() , filmId);
+                film.getReleaseDate(), film.getDuration(), film.getMpa().getId(), filmId);
         return film;
     }
 
@@ -108,7 +108,6 @@ public class FilmDbStorage implements FilmStorage {
         if ((userStorage.getUser(userId) != null)) {
             jdbcTemplate.update("DELETE FROM likes WHERE film_id = ? AND user_id = ?;", filmId, userId);
         }
-        
     }
 
     @Override
