@@ -19,7 +19,7 @@ import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 import ru.yandex.practicum.filmorate.FilmorateApplication;
 
 @JdbcTest
-@ContextConfiguration(classes=FilmorateApplication.class)
+@ContextConfiguration(classes = FilmorateApplication.class)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserDbStorageTest {
     private final JdbcTemplate jdbcTemplate;

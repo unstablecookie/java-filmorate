@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @JdbcTest
-@ContextConfiguration(classes= FilmorateApplication.class)
+@ContextConfiguration(classes = FilmorateApplication.class)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class GenreDbStorageTest {
     private final JdbcTemplate jdbcTemplate;
