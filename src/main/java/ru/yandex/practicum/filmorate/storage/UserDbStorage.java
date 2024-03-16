@@ -28,8 +28,9 @@ public class UserDbStorage implements UserStorage {
         String request = "select * from users";
         return jdbcTemplate.query(request, (rs, rowNum) -> mapUser(rs))
                 .stream()
-                .map(x->{x.setFriends(mapUserFriends(x.getId()));
-                            return x;})
+                .map(x -> {
+                    x.setFriends(mapUserFriends(x.getId()));
+                            return x; })
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +46,7 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
-    @Override 
+    @Override
     public User addUser(User user) throws EntityAlreadyExistException {
         userNameAutoCompletion(user);
         SqlRowSet sqlUserSet = jdbcTemplate.queryForRowSet("select * from users where login = ?", user.getLogin());
@@ -120,8 +121,9 @@ public class UserDbStorage implements UserStorage {
 
         return jdbcTemplate.query(request, (rs, rowNum) -> mapUser(rs), userId, friendId)
                 .stream()
-                .map(x->{x.setFriends(mapUserFriends(x.getId()));
-                    return x;})
+                .map(x -> {
+                    x.setFriends(mapUserFriends(x.getId()));
+                    return x; })
                 .collect(Collectors.toList());
     }
 
@@ -134,14 +136,15 @@ public class UserDbStorage implements UserStorage {
                 "(SELECT * FROM friends WHERE user_id = ?) f ON u.USER_ID = f.FRIENDS_ID ;";
         return jdbcTemplate.query(request, (rs, rowNum) -> mapUser(rs), userId)
                 .stream()
-                .map(x->{x.setFriends(mapUserFriends(x.getId()));
-                    return x;})
+                .map(x -> {
+                    x.setFriends(mapUserFriends(x.getId()));
+                    return x; })
                 .collect(Collectors.toSet());
     }
 
     @Override
     public void approveFriend(Long id, Long friendId) {
-        if((id == null) || (friendId == null) || (!userExistsInTable(id)) || (!userExistsInTable(friendId))) {
+        if ((id == null) || (friendId == null) || (!userExistsInTable(id)) || (!userExistsInTable(friendId))) {
             throw new EntityNotFoundException("user not found");
         }
         Set<User> friends = getFriends(id);
