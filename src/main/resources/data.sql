@@ -1,15 +1,15 @@
 INSERT INTO genre (name) VALUES
-('COMEDY'),
-('DRAMA'),
-('ANIMATION'),
-('THRILLER'),
-('DOCUMENTARY'),
-('ACTION');
+('Комедия'),
+('Драма'),
+('Мультфильм'),
+('Триллер'),
+('Документальный'),
+('Боевик');
 
 
 INSERT INTO mpa (name) VALUES
 ('G'),
 ('PG'),
-('PG13'),
+('PG-13'),
 ('R'),
-('NC17');
+('NC-17');

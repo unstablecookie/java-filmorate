@@ -15,11 +15,10 @@ import ru.yandex.practicum.filmorate.FilmorateApplication;
 import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
-import ru.yandex.practicum.filmorate.storage.UserDbStorage;
+import ru.yandex.practicum.filmorate.storage.db.FilmDbStorage;
+import ru.yandex.practicum.filmorate.storage.db.UserDbStorage;
 
 @JdbcTest
 @ContextConfiguration(classes = FilmorateApplication.class)
@@ -38,8 +37,7 @@ public class FilmDbStorageTest {
         film.setDescription("it is terrifying");
         film.setReleaseDate(LocalDate.of(2010, 1, 1));
         film.setDuration(201);
-        film.setMpa(Mpa.fromId(2));
-        film.setGenres(List.of(Genre.ACTION));
+        film.setMpa(new Mpa(1L, "G"));
         user = new User();
         user.setEmail("kkkker@eew.ru");
         user.setLogin("va3fefef3");

@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import ru.yandex.practicum.filmorate.FilmorateApplication;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.storage.GenreDbStorage;
+import ru.yandex.practicum.filmorate.storage.db.GenreDbStorage;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -42,7 +42,7 @@ public class GenreDbStorageTest {
         //given
         String name = "Комедия";
         //when
-        Genre genre = genreDbStorage.getGenre(1);
+        Genre genre = genreDbStorage.getGenre(1L);
         //then
         assertThat(genre)
                 .isNotNull();
@@ -54,7 +54,7 @@ public class GenreDbStorageTest {
     @Test
     void getGenre_failure_wrongId() {
         //when
-        Integer id = 999;
+        Long id = 999L;
         //then
         assertThatThrownBy(() ->
                 genreDbStorage.getGenre(id))

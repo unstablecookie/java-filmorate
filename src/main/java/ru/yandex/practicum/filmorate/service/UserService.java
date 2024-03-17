@@ -3,6 +3,9 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.List;
 import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
@@ -52,5 +55,14 @@ public class UserService {
 
     public void approveFriend(Long id, Long friendId) {
         userStorage.approveFriend(id, friendId);
+    }
+
+    public static Map<String, Object> toMap(User user) {
+        Map<String, Object> values = new HashMap<>();
+        values.put("login", user.getLogin());
+        values.put("name", user.getName());
+        values.put("email", user.getEmail());
+        values.put("birthday", user.getBirthday());
+        return values;
     }
 }

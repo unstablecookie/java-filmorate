@@ -23,7 +23,7 @@ public class Film {
     @DurationUnit(ChronoUnit.MINUTES)
     @DurationAnnotation
     private Duration duration;
-    private List<Genre> genres;
+    private List<Genre> genres = new ArrayList<>();
     private Mpa mpa;
     private Set<Long> likes = new HashSet<>();
 
@@ -37,15 +37,5 @@ public class Film {
 
     public int getLikesCount() {
         return likes.size();
-    }
-
-    public Map<String, Object> toMap() {
-        Map<String, Object> values = new HashMap<>();
-        values.put("name", name);
-        values.put("description", description);
-        values.put("release_date", releaseDate);
-        values.put("duration", getDuration());
-        values.put("movie_mpa_id", mpa.getId());
-        return values;
     }
 }

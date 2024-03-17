@@ -19,7 +19,7 @@ public class MpaService {
         return mpaStorage.getMpas();
     }
 
-    public Mpa getMpa(Integer id) {
+    public Mpa getMpa(Long id) {
         return mpaStorage.getMpa(id);
     }
 }

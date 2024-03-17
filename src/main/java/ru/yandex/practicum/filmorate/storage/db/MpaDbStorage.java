@@ -1,10 +1,13 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.db;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.storage.MpaStorage;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,16 +31,20 @@ public class MpaDbStorage implements MpaStorage {
     }
 
     @Override
-    public Mpa getMpa(Integer id) {
-        Mpa mpa = Mpa.fromId(id);
-        if (mpa == null) {
+    public Mpa getMpa(Long id) {
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet("select * from mpa where mpa_id = ?", id);
+        if (sqlRowSet.next()) {
+            return mapMpa(sqlRowSet);
+        } else {
             throw new EntityNotFoundException("mpa not found");
         }
-        return mpa;
     }
 
     private Mpa mapMpa(ResultSet rs) throws SQLException {
-        int mpaId = rs.getInt("mpa_id");
-        return Mpa.fromId(mpaId);
+        return new Mpa(rs.getLong("mpa_id"), rs.getString("name"));
+    }
+
+    private Mpa mapMpa(SqlRowSet sqlRowSet) {
+        return new Mpa(sqlRowSet.getLong("mpa_id"), sqlRowSet.getString("name"));
     }
 }

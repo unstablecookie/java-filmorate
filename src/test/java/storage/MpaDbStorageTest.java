@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import ru.yandex.practicum.filmorate.FilmorateApplication;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
-import ru.yandex.practicum.filmorate.storage.MpaDbStorage;
+import ru.yandex.practicum.filmorate.storage.db.MpaDbStorage;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -42,7 +42,7 @@ public class MpaDbStorageTest {
         //given
         String name = "G";
         //when
-        Mpa mpa = mpaDbStorage.getMpa(1);
+        Mpa mpa = mpaDbStorage.getMpa(1L);
         //then
         assertThat(mpa)
                 .isNotNull();
@@ -54,7 +54,7 @@ public class MpaDbStorageTest {
     @Test
     void getMpa_failure_wrongId() {
         //when
-        Integer id = 999;
+        Long id = 999L;
         //then
         assertThatThrownBy(() ->
                 mpaDbStorage.getMpa(id))

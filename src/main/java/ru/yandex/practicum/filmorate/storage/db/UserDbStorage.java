@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.db;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -10,6 +10,9 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.time.LocalDate;
 import java.util.*;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
@@ -56,7 +59,7 @@ public class UserDbStorage implements UserStorage {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("user_id");
-        user.setId(simpleJdbcInsert.executeAndReturnKey(user.toMap()).longValue());
+        user.setId(simpleJdbcInsert.executeAndReturnKey(UserService.toMap(user)).longValue());
         return user;
     }
 
