@@ -1,25 +1,25 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import java.util.Comparator;
+
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Map;
+
 import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 @Service
 public class FilmService {
-
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage,@Qualifier("userDbStorage") UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
@@ -41,28 +41,24 @@ public class FilmService {
     }
 
     public void addLike(Long filmId, Long userId) {
-        Film film = filmStorage.getFilm(filmId);
-        if (film == null) {
-            throw new EntityNotFoundException("film not found");
-        }
-        film.getLikes().add(userId);
+        filmStorage.addLike(filmId, userId);
     }
 
     public void removeLike(Long filmId, Long userId) {
-        Film film = filmStorage.getFilm(filmId);
-        if (film == null) {
-            throw new EntityNotFoundException("film not found");
-        }
-        userStorage.getUser(userId);
-        film.getLikes().remove(userId);
+        filmStorage.removeLike(filmId, userId);
     }
 
-    public Set<Film> getTopFilms(Integer count) {
-        return filmStorage.getFilms().stream().sorted(new Comparator<Film>() {
-            @Override
-            public int compare(Film o1, Film o2) {
-                return o2.getLikesCount() - o1.getLikesCount();
-            }
-        }).limit(count).collect(Collectors.toSet());
+    public List<Film> getTopFilms(Integer count) {
+        return filmStorage.getTopFilms(count);
+    }
+
+    public static Map<String, Object> toMap(Film film) {
+        Map<String, Object> values = new HashMap<>();
+        values.put("name", film.getName());
+        values.put("description", film.getDescription());
+        values.put("release_date", film.getReleaseDate());
+        values.put("duration", film.getDuration());
+        values.put("movie_mpa_id", film.getMpa().getId());
+        return values;
     }
 }
