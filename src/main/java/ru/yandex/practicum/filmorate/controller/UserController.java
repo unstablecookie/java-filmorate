@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.exception.EntityAlreadyExistException;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}/friends")
-    public List<User> getUserFriends(@PathVariable Long id) {
+    public Set<User> getUserFriends(@PathVariable Long id) {
         log.info("get user id :" + id + " friends");
         return userService.getFriends(id);
     }
@@ -64,5 +65,12 @@ public class UserController {
                                        @PathVariable Long friendId) {
         log.info("get common friends between user id :" + id + " and friend id :" + friendId);
         return userService.getCommonFriends(id, friendId);
+    }
+
+    @PutMapping(value = "/{id}/friends/common/{friendId}")
+    public void approveFriend(@PathVariable Long id,
+                              @PathVariable Long friendId) {
+        log.info("approve friend id : " + friendId + " for user id :" + id);
+        userService.approveFriend(id, friendId);
     }
 }
